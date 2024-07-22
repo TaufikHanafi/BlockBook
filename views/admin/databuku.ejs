@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Data Buku - BlockBook</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>  
+        const userphoto = "<%= user.photo %>";
+        const usernama = "<%= user.name %>";
+    </script>
+</head>
+<body id="top">
+
+<div id="headeradmin"></div>
+
+<main class="admin-dashboard">
+    <div class="container" style="padding-top: 75px; padding-bottom: 50px;">
+        <div class="book-list">
+            <h1 style="text-align: center; padding-bottom: 20px;">Daftar Buku</h1>
+            <% books.forEach(book => { %>
+                <div class="book-item" data-book-name="<%= book.book.title %>" >
+                    <img src="<%= book.book.gambarBuku %>" alt="Book Cover" style="width: 400px; height: 450px;">
+                    <div class="book-details">
+                        <h3><%= book.book.tittle %></h3>
+                        <p>Tanggal Publish : <%= book.book.waktuPublish %></p>
+                        <p>Penerbit: <%= book.publiser.name %></p>
+                        <p>Judul Buku: <%= book.book.title %></p>
+                        <p>Penulis: <%= book.book.author %></p>
+                        <p>Harga: Rp. <%= book.book.harga %></p>
+                        <p>ISBN : <%= book.book.isbn %></p>
+                        <p>Bahasa : <%= book.book.bahasa %></p>
+                        <p>Halaman Buku : <%= book.book.jumlahHalaman %></p>
+                        <p>Total Terjual: <%= book.total_terjual || 0 %></p>
+                        <p>Total Keuntungan: Rp. <%= book.total_keuntungan || 0 %></p>
+                        <p>Total Keuntungan Admin: Rp. <%= book.total_keuntungan_Admin || 0 %></p>
+
+                        <form action="/update_visibility" method="POST">
+                            <input type="hidden" name="id_buku" value="<%= book.book.index %>">
+                            <label for="is_visible_<%= book.book.index %>">Tampilkan Buku:</label>
+                            <input type="checkbox" id="is_visible_<%= book.book.index %>" name="visible" <%= book.book.visible ? 'checked' : '' %>>
+                            <button type="submit">Update</button>
+                        </form>                        
+
+                        <div class="download-section">
+                            <h2>Download Uploaded Files</h2>
+                            <a href="/download-fileidentitas?path=<%= book.publiser.Identitas %>" class="btn btn-primary">Download Identitas</a>
+                            <a href="/download-file?path=<%= book.book.ebook %>&checksum=<%= book.book.pdfChecksum %>" class="btn btn-primary">Download E-Book</a>
+                        </div>                                                
+
+                          <form action="/delete_book" method="POST">
+                            <input type="hidden" name="id_buku" value="<%= book.book.index %>">                          
+                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus buku ini?');">Hapus</button>
+                        </form>
+                        
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</main>
+
+<div id="footeradmin"></div>
+
+<a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+    <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+</a>
+
+<script src="/js/scriptadmin.js" defer></script>
+<script src="/js/scriptheaderfooter.js" defer></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>

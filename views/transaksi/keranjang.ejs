@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockBook - Keranjang Belanja</title>
+    <meta name="title" content="BlockBook - Keranjang Belanja">
+    <meta name="description" content="Halaman Keranjang Belanja BlockBook">
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preload" as="image" href="image/hero-banner.png">
+    <link rel="preload" as="image" href="image/hero-bg.jpg">
+    <script>
+        const userphoto = "<%= user.photo %>";
+        const usernama = "<%= user.name %>";
+    </script>
+</head>
+<body id="top">
+
+    <div id="headerkeranjang"></div>
+
+    <div class="container mt-5" style="padding-top: 100px; padding-bottom: 100px; background-color: var(--white-background);">
+        <h2 class="mb-4">Keranjang Belanja</h2>
+
+        <% if (cart.length === 0) { %>
+            <div class="alert alert-info" role="alert">
+                Keranjang belanja Anda kosong.
+            </div>
+        <% } else { %>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Gambar</th>
+                        <th>Judul</th>
+                        <th>Penulis</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let total = 0; %>
+                    <% cart.forEach(item => { %>
+                        <% if (item && item.publisherId && item.id && item.image && item.title && item.price && item.quantity) { %>
+                            <tr id="cart-item-<%= item.id %>">
+                                <td><img src="<%= item.image %>" alt="<%= item.title %>" class="img-fluid" style="max-width: 100px;"></td>
+                                <td><%= item.publisherId %></td>
+                                <td><%= item.title %></td>
+                                <td>Penulis: <%= item.publisherName %></td>
+                                <td>Rp. <%= item.price.toLocaleString() %></td>
+                                <td><%= item.quantity %></td>
+                                <td>Rp. <%= (item.price * item.quantity).toLocaleString() %></td>
+                            </tr>
+                            <% total += item.price * item.quantity; %>
+                        <% } %>
+                    <% }); %>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5" class="text-end">Total</td>
+                        <td>Rp. <%= total.toLocaleString() %></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="text-end">
+                <button class="btn btn-primary" id="continue-payment">Lanjutkan ke Pembayaran</button>
+            </div>
+
+            <div id="payment-form" style="display: none; margin-top: 20px;">
+                <h2>Form Pembayaran</h2>
+                <form action="/payment" method="POST" id="paymentForm">
+                    <div class="mb-3">
+                        <label for="paymentMethod" class="form-label">Metode Pembayaran</label>
+                        <input type="text" class="form-control" id="paymentMethod" name="paymentMethod" required>
+                      </div>
+                    <div class="mb-3">
+                        <label for="total_pembayaran" class="form-label">Total Pembayaran (Rp.)</label>
+                        <input type="number" class="form-control" id="total_pembayaran" name="total_pembayaran" value="<%= total %>" readonly>
+                    </div>
+                
+                    <% cart.forEach((item, index) => { %>
+                        <input type="hidden" name="items[<%= index %>][gambarBuku]" value="<%= item.image %>">
+                        <input type="hidden" name="items[<%= index %>][title]" value="<%= item.title %>">
+                        <input type="hidden" name="items[<%= index %>][id]" value="<%= item.id %>">
+                        <input type="hidden" name="items[<%= index %>][quantity]" value="<%= item.quantity %>">
+                        <input type="hidden" name="items[<%= index %>][subtotal]" value="<%= item.price * item.quantity %>">
+                        <input type="hidden" name="items[<%= index %>][publisherId]" value="<%= item.publisherId %>">
+                    <% }) %>
+                
+                    <input type="hidden" name="totalAmountValue" value="<%= total %>">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success">Bayar Sekarang</button>
+                    </div>
+                </form>                
+            </div>
+        <% } %>
+    </div>
+
+    <div id="footerkeranjang"></div>
+
+    <a href="#top" class="back-top-btn" aria-label="kembali ke atas" data-back-top-btn>
+        <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+    </a>
+
+    <script src="js/scriptweb.js" defer></script>
+    <script src="js/scriptkeranjang.js" defer></script>
+    <script src="js/scripttampilankeranjang.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        document.getElementById('continue-payment').addEventListener('click', function() {
+            document.getElementById('payment-form').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

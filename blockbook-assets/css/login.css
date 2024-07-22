@@ -1,0 +1,99 @@
+body {
+    background-color: #f8f9fa; /* Soft gray background for a neutral look */
+}
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Adjusted to 100vh for full screen height coverage */
+}
+
+.login-form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for a subtle depth */
+}
+
+.login-form h2 {
+    color: #343a40; /* Dark gray for a strong heading presence */
+    margin-bottom: 30px;
+}
+
+.login-form label {
+    color: #495057; /* Slightly lighter gray for readable contrast */
+}
+
+.login-form .form-control {
+    border-radius: 5px;
+    padding: 20px; /* Comfortable padding for ease of typing */
+}
+
+.btn-primary {
+    background-color: #28a745; /* Green color indicating a primary action */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.btn-primary:hover {
+    background-color: #218838; /* Slightly darker green on hover for feedback */
+}
+
+.register-link {
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+    color: #007bff; /* Bootstrap's default primary blue */
+    text-decoration: none;
+}
+
+.register-link:hover {
+    color: #0056b3; /* Darker blue on hover for interaction feedback */
+    text-decoration: none;
+}
+
+.back-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #343a40; /* Dark background for visibility */
+    color: white;
+    padding: 10px;
+    border-radius: 50%; /* Circular button design */
+    display: none; /* Ensure this is displayed as needed via JavaScript */
+    align-items: center;
+    justify-content: center;
+}
+
+.back-top-btn:hover {
+    background-color: #23272b; /* Darker shade on hover */
+}
+
+.modal-content {
+    border-radius: 10px; /* Rounded corners for modal */
+}
+
+.close {
+    color: #aaa; /* Light grey for the close button */
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black; /* Black for clear visibility on hover/focus */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.error-message {
+    color: red; /* Red to highlight error messages */
+}
+
+.modal-body {
+    max-height: 400px;
+    overflow-y: auto; /* Scrollable modal content for better user experience */
+}

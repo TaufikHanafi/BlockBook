@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockBook - Publisher Transactions</title>
+    <meta name="title" content="BlockBook - Publisher Transactions">
+    <meta name="description" content="Publisher Transactions Page">
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preload" as="image" href="/image/hero-banner.png">
+    <link rel="preload" as="image" href="/image/hero-bg.jpg">
+
+    <script>
+        const userphoto = "<%= user.photo %>";
+        const usernama = "<%= user.name %>";
+    </script>
+</head>
+<body id="top">
+    <div id="headerpenerbit"></div>
+
+    <div class="container mt-5" style="padding-top: 100px; padding-bottom: 100px; background-color: var(--white-background);">
+        <h2 class="mb-4">My Transactions</h2>
+        <% if (!order || order.length === 0) { %>
+            <div class="alert alert-info" role="alert">
+                No transactions found.
+            </div>
+        <% } else { %>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th> Book </th>
+                        <th>User ID</th>
+                        <th>Book Title</th>
+                        <th>Keuntungan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% order.forEach(transaction => { %>
+                        <tr>
+                            <td><img src="<%= transaction.gambarBuku %>" alt="Book Cover" width="100"></td>
+                            <td><%= transaction.userId %></td>
+                            <td><%= transaction.title %></td>
+                            <td><%= transaction.total %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
+
+    <div id="footerpenerbit"></div>
+
+    <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+        <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+    </a>
+
+    <script src="/js/scriptweb.js" defer></script>
+    <script src="/js/scriptpenerbit.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
+

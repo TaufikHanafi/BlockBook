@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register penerbit</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/register.css">
+</head>
+
+<body>
+  <div class="register-container">
+    <div class="register-form" style="padding-top: 350px;">
+      <h2>Register</h2>
+      <form action="/registerpenerbit" method="post" id="registerForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="nama_penerbit" class="form-label">Nama</label>
+          <input type="text" class="form-control" id="nama_penerbit" name="nama_penerbit" required>
+        </div>
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+          <label for="BANK_ID" class="form-label">BANK ID</label>
+          <input type="text" class="form-control" id="BANK_ID" name="bank_id" required>
+        </div>
+        <div class="mb-3">
+          <label for="private_key" class="form-label">Upload private key</label>
+          <input type="text" class="form-control" id="private_key" name="private_key" required>
+        </div>
+        <div class="mb-3">
+          <label for="Identitas" class="form-label">Upload Identitas</label>
+          <input type="file" class="form-control" id="Identitas" name="identitas" accept="application/pdf" required>
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="termsCheckbox" required>
+          <label class="form-check-label" for="termsCheckbox">Saya setuju dengan 
+            <button type="button" class="btn btn-link p-0" data-toggle="modal" data-target="#termsModal">syarat dan ketentuan</button>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="registerButton" disabled>Register</button>
+      </form>
+      <p class="register-link">Sudah punya akun? <a href="/login" class="register-link">Login di sini</a></p>
+    </div>
+  </div>
+
+  <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="termsModalLabel">Syarat dan Ketentuan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+    <h1>Syarat dan Ketentuan Publikasi dan Penjualan Buku</h1>
+
+    <h2>1. Definisi</h2>
+    <p>1.1 "Penerbit" merujuk pada [Nama Penerbit] yang bertanggung jawab atas penerbitan buku.</p>
+    <p>1.2 "Penulis" merujuk pada individu atau entitas yang menyerahkan karya tulis untuk diterbitkan.</p>
+    <p>1.3 "Buku" merujuk pada karya tulis yang akan dipublikasikan dan dijual dalam berbagai format.</p>
+    <p>1.4 "Pihak Ketiga" merujuk pada entitas selain Penerbit dan Penulis yang terlibat dalam distribusi dan penjualan buku.</p>
+
+    <h2>2. Pengajuan Naskah</h2>
+    <p>2.1 Penulis wajib menyerahkan naskah yang asli dan bebas dari pelanggaran hak cipta pihak lain.</p>
+    <p>2.2 Penulis bertanggung jawab atas keaslian dan legalitas konten naskah yang diajukan.</p>
+
+    <h2>3. Proses Publikasi</h2>
+    <p>3.1 Penerbit akan meninjau dan menyetujui naskah sebelum diterbitkan.</p>
+    <p>3.2 Penerbit berhak mengedit naskah untuk kesesuaian dengan standar penerbitan.</p>
+    <p>3.3 Penulis akan diberitahukan tentang setiap perubahan substansial pada naskah.</p>
+
+    <h2>4. Hak Cipta dan Lisensi</h2>
+    <p>4.1 Hak cipta buku tetap milik Penulis, kecuali diatur lain dalam perjanjian terpisah.</p>
+    <p>4.2 Penulis memberikan lisensi non-eksklusif kepada Penerbit untuk menerbitkan, mendistribusikan, dan menjual buku dalam berbagai format.</p>
+
+    <h2>5. Royalties dan Pembayaran</h2>
+    <p>5.1 Penulis akan menerima royalti berdasarkan persentase yang disepakati dari penjualan bersih buku.</p>
+    <p>5.2 Pembayaran royalti akan dilakukan secara berkala sesuai dengan jadwal yang telah disepakati.</p>
+
+    <h2>6. Distribusi dan Penjualan</h2>
+    <p>6.1 Penjualan dikenakan biaya admin sebesar Rp. 15.000,00/pcs setiap buku yang akan dijual</p>
+    <p>6.2 Penerbit bertanggung jawab atas distribusi dan penjualan buku melalui saluran yang disetujui.</p>
+    <p>6.3 Penerbit dapat melibatkan pihak ketiga dalam distribusi dan penjualan buku.</p>
+    <p>6.4 Penulis dapat mempromosikan dan menjual buku secara independen sesuai dengan perjanjian yang disepakati.</p>
+
+    <h2>7. Kewajiban Penulis</h2>
+    <p>7.1 Penulis wajib mematuhi semua peraturan hukum terkait penerbitan dan penjualan buku.</p>
+    <p>7.2 Penulis bertanggung jawab atas segala klaim atau sengketa hukum yang timbul dari isi buku.</p>
+
+    <h2>8. Kewajiban Penerbit</h2>
+    <p>8.1 Penerbit wajib mempublikasikan buku sesuai dengan standar industri dan perjanjian yang telah disepakati.</p>
+    <p>8.2 Penerbit bertanggung jawab atas distribusi dan promosi buku sesuai dengan kebijakan perusahaan.</p>
+
+    <h2>9. Pembatalan dan Penarikan Buku</h2>
+    <p>9.1 Penulis dapat meminta penarikan buku dari publikasi dengan pemberitahuan tertulis kepada Penerbit.</p>
+    <p>9.2 Penerbit berhak membatalkan publikasi buku jika ditemukan pelanggaran hak cipta atau masalah hukum lainnya.</p>
+
+    <h2>10. Penyelesaian Sengketa</h2>
+    <p>10.1 Sengketa yang timbul dari perjanjian ini akan diselesaikan melalui mediasi terlebih dahulu.</p>
+    <p>10.2 Jika mediasi gagal, sengketa akan diselesaikan melalui jalur hukum yang berlaku di wilayah yurisdiksi Penerbit.</p>
+
+    <h2>11. Perubahan Syarat dan Ketentuan</h2>
+    <p>11.1 Penerbit berhak mengubah syarat dan ketentuan ini sewaktu-waktu dengan pemberitahuan tertulis kepada Penulis.</p>
+    <p>11.2 Perubahan syarat dan ketentuan akan berlaku setelah Penulis menyetujui perubahan tersebut.</p>
+
+    <h2>12. Ketentuan Lainnya</h2>
+    <p>12.1 Syarat dan ketentuan ini diatur oleh hukum yang berlaku di wilayah yurisdiksi Penerbit.</p>
+    <p>12.2 Jika ada ketentuan dalam syarat dan ketentuan ini yang dianggap tidak sah atau tidak dapat dilaksanakan, ketentuan tersebut akan diubah atau dihapuskan tanpa mempengaruhi ketentuan lainnya.</p>
+    <p>12.3 File pelengkap merupakan syarat dalam penjualan buku pada website</p>
+</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/scriptlogin.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

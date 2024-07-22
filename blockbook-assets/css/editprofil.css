@@ -1,0 +1,36 @@
+body {
+    background-color: #f4f4f4;
+}
+
+.edit-profile-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #333;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: var(--green);
+    border-color: var(--green);
+}
+
+.btn-primary:hover {
+    background-color: var(--green);
+    border-color: var(--green);
+}
+
+.form-control {
+    border-radius: 4px;
+}
+
+input[type="file"] {
+    border: 0;
+}

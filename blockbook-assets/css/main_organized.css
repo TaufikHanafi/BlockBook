@@ -1,0 +1,70 @@
+/* Sidebar Styles */
+aside {
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+aside h3 {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #333;
+}
+
+aside ul {
+  list-style: none;
+  padding: 0;
+}
+
+aside ul li {
+  margin-bottom: 10px;
+}
+
+aside select, aside input[type="range"] {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Product Card Styles */
+.card {
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+.card-banner {
+  position: relative;
+}
+
+.card-action {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.card-action .action-btn {
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-price del {
+  color: #999;
+  margin-right: 5px;
+}
+
+.card-price {
+  color: #333;
+  font-size: 18px;
+  font-weight: 700;
+}

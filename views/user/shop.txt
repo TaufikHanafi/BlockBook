@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BlockBook - SHOP</title>
+    <meta name="title" content="BlockBook - Get Your Original Book Collections">
+    <meta name="description" content="This is a Book eCommerce html template made by codewithsadee">
+
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+    <link rel="stylesheet" href="css/main.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="preload" as="image" href="image/hero-banner.png">
+    <link rel="preload" as="image" href="image/hero-bg.jpg">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script>  
+        const userphoto = "<%= user.photo %>";
+        const usernama = "<%= user.name %>";
+    </script>
+
+</head>
+
+<body id="top">
+
+    <div id="headerweb"></div>
+
+    <main>
+        <article>
+
+            <section class="section featured" aria-label="featured collection">
+                <div class="container">
+
+                    <h2 class="h2 section-title">Featured Collections</h2>
+
+                    <p class="section-text">
+                        Several interesting book collections
+                    </p>
+
+                    <ul class="grid-list">
+
+                        <% books.forEach(book=> { %>
+                            <li>
+                                <div class="product-card" data-id="<%= book.id_buku %>" data-sinopsis="<%= book.sinopsis_buku %>">
+
+                                    <div class="card-banner img-holder" style="--width: 384; --height: 480;">
+                                        <img src="<%= book.gambar_buku %>" width="384" height="480" loading="lazy"
+                                            alt="<%= book.judul_buku %>" class="img-cover">
+
+                                        <div class="card-action">
+
+                                            <button class="action-btn" aria-label="quick view" title="Quick View">
+                                                <ion-icon name="eye-outline" aria-hidden="true"></ion-icon>
+                                            </button>
+
+                                            <button class="action-btn" aria-label="add to cart" title="Add to Cart">
+                                                <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                                            </button>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="card-content">
+
+                                        <h3 class="h3">
+                                            <a href="/bookproduct" class="card-title">
+                                                <%= book.judul_buku %>
+                                            </a>
+                                        </h3>
+
+                                        <p class="card-price" data-price="<%= book.harga_buku %>">Rp. <%= book.harga_buku.toLocaleString() %></p>
+
+                                        <p class="card-stock">Stock: <%= book.jumlah_stock %>
+                                        </p> 
+
+                                    </div>
+
+                                </div>
+                            </li>
+                            <% }); %>
+
+                    </ul>
+
+                </div>
+            </section>
+
+        </article>
+    </main>
+
+    <div id="footerweb"></div>
+
+    <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+        <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+    </a>
+
+    <div id="cart" class="cart">
+        <button class="close" id="close-cart">&times;</button>
+        <h2>Keranjang Belanja</h2>
+        <div id="empty-cart" class="empty-cart">
+            <img src="image/keranjang.svg" alt="Cart Graphic">
+            <p>Tidak ada pesanan</p>
+        </div>
+        <ul id="cart-items"></ul>
+        <p class="total">Total: Rp. 0</p>
+        <button class="checkout" id="checkout">Checkout</button>
+    </div>
+    <div class="page-overlay" ></div>
+
+    <div id="quickview-modal" class="quickview-modal">
+        <div class="quickview-content">
+            <div class="quickview-details"></div>
+            <button class="close-quickview">&times;</button>
+        </div>
+    </div>
+
+    <script src="js/scriptweb.js" defer></script>
+    <script src="js/scriptkeranjang.js" defer></script>
+    <script src="js/scriptheaderfooter.js" defer></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+
+
+
+
+scriptkeranjang
+
+document.addEventListener('DOMContentLoaded', function () {
+    const cart = document.getElementById('cart');
+    const cartItems = document.getElementById('cart-items');
+    const emptyCart = document.getElementById('empty-cart');
+    const closeCartButton = document.getElementById('close-cart');
+    const cartCount = document.getElementById('cart-count');
+    const cartButton = document.querySelector('.header-action-btn');
+    const pageOverlay = document.querySelector('.page-overlay');
+    const totalElement = document.querySelector('.cart .total');
+    const checkoutButton = document.getElementById('checkout');
+    const quickviewModal = document.getElementById('quickview-modal');
+    const quickviewContent = document.querySelector('.quickview-details');
+    const openCartButton = document.querySelector('.open-cart');
+    let totalPrice = 0;
+    let itemCount = 0;
+    let cartData = [];
+
+    async function saveCartDataToServer() {
+        try {
+            const response = await fetch('/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cart: cartData }) // Sesuaikan dengan format yang diharapkan oleh server
+            });
+            const result = await response.json();
+            if (result.success) {
+                console.log('Cart data saved successfully.');
+            } else {
+                console.error('Failed to save cart data:', result.message);
+            }
+        } catch (error) {
+            console.error('Error saving cart data:', error);
+        }
+    }
+
+    async function loadCartDataFromServer() {
+        try {
+            const response = await fetch('/cart');
+            const result = await response.json();
+            cartData = result.cart || []; // Sesuaikan dengan format yang diterima dari server
+            updateCartDisplay();
+        } catch (error) {
+            console.error('Error loading cart data:', error);
+        }
+    }
+
+    function updateCartDisplay() {
+        cartItems.innerHTML = '';
+        if (cartData.length === 0) {
+            emptyCart.style.display = 'flex';
+            cartItems.style.display = 'none';
+        } else {
+            emptyCart.style.display = 'none';
+            cartItems.style.display = 'block';
+            cartData.forEach(item => {
+                const cartItem = document.createElement('li');
+                cartItem.classList.add('cart-item');
+                cartItem.dataset.id = item.id;
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="cart-item-details">
+                        <span>${item.title}</span>
+                        <span class="cart-item-price">Rp. ${item.price.toLocaleString()}</span>
+                        <input type="number" value="${item.quantity}" min="1" class="item-quantity">
+                    </div>
+                    <button class="remove-item">&times;</button>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+        }
+        totalPrice = cartData.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+        totalElement.textContent = `Total: Rp. ${totalPrice.toLocaleString()}`;
+        itemCount = cartData.reduce((acc, item) => acc + item.quantity, 0);
+        cartCount.textContent = itemCount;
+    }
+
+    document.querySelectorAll('.action-btn[title="Add to Cart"]').forEach(button => {
+        button.addEventListener('click', function (event) {
+            const productId = button.dataset.id;
+            const productCard = button.closest('.product-card');
+            const productImageSrc = productCard.querySelector('.img-cover').src;
+            const productTitle = productCard.querySelector('.card-title').textContent;
+            const productPrice = parseInt(productCard.querySelector('.card-price').getAttribute('data-price'), 10);
+
+            const existingItem = cartData.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cartData.push({ id: productId, image: productImageSrc, title: productTitle, price: productPrice, quantity: 1 });
+            }
+
+            updateCartDisplay();
+            saveCartDataToServer();
+        });
+    });
+
+    cartButton.addEventListener('click', function () {
+        cart.classList.add('open');
+        document.body.classList.add('no-scroll');
+        pageOverlay.style.display = 'block';
+    });
+
+    closeCartButton.addEventListener('click', function () {
+        cart.classList.remove('open');
+        document.body.classList.remove('no-scroll');
+        pageOverlay.style.display = 'none';
+    });
+
+    pageOverlay.addEventListener('click', function () {
+        cart.classList.remove('open');
+        document.body.classList.remove('no-scroll');
+        pageOverlay.style.display = 'none';
+    });
+
+    cartItems.addEventListener('click', function (event) {
+        if (event.target.classList.contains('remove-item')) {
+            const cartItem = event.target.closest('.cart-item');
+            const itemId = cartItem.dataset.id;
+            cartData = cartData.filter(item => item.id !== itemId);
+            updateCartDisplay();
+            saveCartDataToServer();
+        }
+    });
+
+    cartItems.addEventListener('input', function (event) {
+        if (event.target.classList.contains('item-quantity')) {
+            const cartItem = event.target.closest('.cart-item');
+            const itemId = cartItem.dataset.id;
+            const newQuantity = parseInt(event.target.value, 10);
+
+            if (newQuantity < 1) {
+                event.target.value = 1;
+                return;
+            }
+
+            const item = cartData.find(item => item.id === itemId);
+            if (item) {
+                item.quantity = newQuantity;
+                updateCartDisplay();
+                saveCartDataToServer();
+            }
+        }
+    });
+
+    checkoutButton.addEventListener('click', function () {
+        fetch('/keranjang', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cart: cartData, total: totalPrice }),
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/keranjang';
+            } else {
+                alert('Gagal melanjutkan proses checkout. Silakan coba lagi.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.querySelectorAll('.action-btn[title="Quick View"]').forEach(button => {
+        button.addEventListener('click', function () {
+            const productCard = button.closest('.product-card');
+            const productImageSrc = productCard.querySelector('.img-cover').src;
+            const productTitle = productCard.querySelector('.card-title').textContent;
+            const productPrice = productCard.querySelector('.card-price').textContent;
+            const productDescription = productCard.getAttribute('data-sinopsis');
+
+            quickviewContent.innerHTML = `
+                <img src="${productImageSrc}" alt="${productTitle}" class="quickview-img">
+                <h2>${productTitle}</h2>
+                <p>${productPrice}</p>
+                <p>${productDescription}</p>
+            `;
+
+            quickviewModal.style.display = 'block';
+        });
+    });
+
+    document.querySelector('.close-quickview').addEventListener('click', function () {
+        quickviewModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target === quickviewModal) {
+            quickviewModal.style.display = 'none';
+        }
+    });
+
+    loadCartDataFromServer();
+});
+
+function filterBooks() {
+    let searchInput = document.getElementById('search-input').value.toLowerCase();
+    let authorSelect = document.getElementById('author-select').value.toLowerCase();
+    let priceRange = document.getElementById('price-range').value;
+    let productList = document.getElementById('product-list').children;
+    let productCount = 0;
+
+    for (let product of productList) {
+        let title = product.querySelector('.card-title').innerText.toLowerCase();
+        let author = product.getAttribute('data-author').toLowerCase();
+        let price = product.getAttribute('data-price');
+
+        if ((title.includes(searchInput) || searchInput === '') &&
+            (author.includes(authorSelect) || authorSelect === 'all') &&
+            (price <= priceRange)) {
+            product.style.display = 'block';
+            productCount++;
+        } else {
+            product.style.display = 'none';
+        }
+    }
+
+    document.getElementById('product-count').innerText = `${productCount} Product Available`;
+}
+
+function filterCategory(category) {
+    let productList = document.getElementById('product-list').children;
+    let productCount = 0;
+
+    for (let product of productList) {
+        let productCategory = product.getAttribute('data-category').toLowerCase();
+
+        if (category === 'all' || productCategory === category) {
+            product.style.display = 'block';
+            productCount++;
+        } else {
+            product.style.display = 'none';
+        }
+    }
+
+    document.getElementById('product-count').innerText = `${productCount} Product Available`;
+}
+
+function sortBooks() {
+    let sortSelect = document.getElementById('sort-select').value;
+    let productList = document.getElementById('product-list');
+    let products = Array.from(productList.children);
+
+    products.sort((a, b) => {
+        let priceA = parseInt(a.getAttribute('data-price'));
+        let priceB = parseInt(b.getAttribute('data-price'));
+
+        if (sortSelect === 'price-lowest') {
+            return priceA - priceB;
+        } else {
+            return priceB - priceA;
+        }
+    });
+
+    for (let product of products) {
+        productList.appendChild(product);
+    }
+}
+
+
+featured.css
+/* .product-card {
+  position: relative;
+  border: 1px solid var(--green);
+}
+
+.product-card .card-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: var(--green);
+  color: var(--white-background);
+  font-size: var(--fs-8);
+  font-weight: var(--fw-700);
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.product-card .card-banner {
+  position: relative;
+}
+
+.product-card .card-action {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background-color: var(--white-background);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 15px;
+  border-radius: var(--radius-pill);
+  transition: var(--transition-2);
+  opacity: 0;
+}
+
+.product-card:is(:hover, :focus) .card-action {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.product-card .action-btn {
+  font-size: 18px;
+  transition: var(--transition-1);
+}
+
+.product-card :is(.action-btn, .card-title):is(:hover, :focus) {
+  color: var(--green);
+}
+
+.product-card .card-content {
+  padding: 10px;
+}
+
+.product-card .h3 {
+  font-weight: var(--fw-400);
+}
+
+.product-card .card-title {
+  font-family: var(--ff-jost);
+  transition: var(--transition-1);
+}
+
+.product-card .card-price {
+  color: var(--green);
+  margin-block: 10px 5px;
+}
+
+.product-card .rating-wrapper {
+  display: flex;
+  gap: 5px;
+  color: var(--selective-yellow);
+}
+
+.product-card .rating-wrapper ion-icon {
+  --ionicon-stroke-width: 45px;
+} */
+
+
+
+const express = require('express');
+const mysql = require('mysql');
+const path = require('path');
+const multer = require('multer');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const flash = require('connect-flash');
+const bcrypt = require('bcrypt');
+
+const app = express();
+
+app.set('views', './views');
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT MYSQL*/
+/*----------------------------------*/
+
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'blockbook'
+});
+
+db.connect((err) => {
+  if (err) {
+    throw err;
+  }
+  console.log('Terhubung ke database MySQL...');
+});
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT STATIC FOLDER*/
+/*----------------------------------*/
+
+/*STATIC FOLDER*/
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('blockbook-assets'));
+app.use(express.static(path.join(__dirname, 'blockbook-assets')));
+app.use('/css', express.static(path.join(__dirname, 'blockbook-assets/css')));
+app.use('/image', express.static(path.join(__dirname, 'blockbook-assets/image')));
+app.use('/js', express.static(path.join(__dirname, 'blockbook-assets/js')));
+app.use('/book', express.static(path.join(__dirname, 'blockbook-assets/book')));
+app.use('/imagebook', express.static(path.join(__dirname, 'blockbook-assets/book/image')));
+app.use('/pdfbook', express.static(path.join(__dirname, 'blockbook-assets/book/pdf')));
+
+// Log each request for debugging
+app.use((req, res, next) => {
+  console.log(`Request for: ${req.url}`);
+  next();
+});
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT SESSION*/
+/*----------------------------------*/
+
+/*SESSION SETUP*/
+app.use(session({
+  secret: 'blockbook-awesome',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // pastikan secure: true jika menggunakan HTTPS
+}));
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT MIDDLEWARE*/
+/*----------------------------------*/
+
+/*MIDDLEWARE AUTHORIZATION*/
+function ensureAuthenticated(req, res, next) {
+  if (req.session.loggedIn) {
+    return next();
+  }
+  req.flash('error_msg', 'Please log in to view that resource');
+  res.redirect('/login');
+}
+
+function ensureRole(role) {
+  return function (req, res, next) {
+    if (req.session.role === role) {
+      return next();
+    }
+    req.flash('error_msg', 'You do not have permission to view this resource');
+    res.redirect('/login');
+  };
+}
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT DEKLARASI PAGE*/
+/*----------------------------------*/
+
+/*DEKLARASI PAGE*/
+app.get('', (req, res) => {
+  res.render('dashboard');
+});
+
+app.get('/about', ensureAuthenticated, (req, res) => {
+  res.render('user/aboutus', {user: req.session.user});
+});
+
+app.get('/contact', ensureAuthenticated, (req, res) => {
+  res.render('user/contact', {user: req.session.user});
+});
+
+app.get('/myorder', ensureAuthenticated, (req, res) => {
+  res.render('transaksi/pesanan_selesai', {user: req.session.user});
+});
+
+app.get('/publikasi', ensureAuthenticated, ensureRole('penerbit'), (req, res) => {
+  res.render('publikasi/publikasi', {user: req.session.user});
+});
+
+app.get('/transaksipenerbit', ensureAuthenticated, ensureRole('penerbit'), (req, res) => {
+  res.render('publikasi/transaksi_penerbit', {user: req.session.user});
+});
+
+app.get('/admin', ensureAuthenticated, ensureRole('admin'), (req, res) => {
+  res.render('admin/admin', {user: req.session.user});
+});
+
+app.get('/login', (req, res) => {
+  res.render('login/login_page');
+});
+
+app.get('/registeruser', (req, res) => {
+  res.render('login/register');
+});
+
+app.get('/registerpenerbit', (req, res) => {
+  res.render('login/registerpenerbit');
+});
+
+app.get('/pembayaran', (req, res) => {
+  res.render('transaksi/pembayaran');
+});
+
+app.get('/dashboarduser', ensureAuthenticated, (req, res) => {
+  res.render('user/dashboard_user', {user: req.session.user});
+});
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT TAMPILAN BUKU*/
+/*----------------------------------*/
+
+app.get('/databuku', ensureAuthenticated, ensureRole('admin'), (req, res) => {
+  const sql = `SELECT buku.*, penerbit.nama_penerbit, SUM(pemesanan_buku.jumlah_buku_dipesan) AS total_terjual,
+    SUM(pemesanan_buku.total_harga) AS total_keuntungan
+    FROM buku
+    LEFT JOIN penerbit ON buku.id_penerbit = penerbit.id_penerbit
+    LEFT JOIN pemesanan_buku ON buku.id_buku = pemesanan_buku.id_buku
+    GROUP BY buku.id_buku`;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching data:', err.stack);
+      return res.status(500).send('Error fetching data');
+    }
+    res.render('admin/databuku', { books: results, user: req.session.user });
+  });
+});
+
+app.get('/shop', ensureAuthenticated, (req, res) => {
+  const sql = `SELECT buku.id_buku, buku.gambar_buku, buku.judul_buku, buku.harga_buku, buku.sinopsis_buku, buku.penulis_buku, buku.ISBN, buku.bahasa, buku.lembar_print
+    FROM buku
+    LEFT JOIN penerbit ON buku.id_penerbit = penerbit.id_penerbit
+    LEFT JOIN penerbit ON buku.nama_penerbit = penerbit.nama_penerbit
+    WHERE buku.is_visible = TRUE`;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching book data:', err.stack);
+      return res.status(500).send('Error fetching book data');
+    }
+    res.render('user/shop', { 
+      books: results, 
+      user: req.session.user 
+    });
+  });
+});
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT LOGIN DAN REGISTER*/
+/*----------------------------------*/
+
+/*REGISTER SECTION*/
+// Registration for user
+app.post('/registeruser', async (req, res) => {
+  const { nama, email, password } = req.body;
+  console.log("Original password:", password); // Log the original password
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log("Hashed password:", hashedPassword); // Log the hashed password
+
+  const sql = 'INSERT INTO user (nama, email, password) VALUES (?, ?, ?)';
+  db.query(sql, [nama, email, hashedPassword], (err, result) => {
+    if (err) {
+      console.error('Error inserting data:', err.stack);
+      return res.status(500).send('Error registering user');
+    }
+    res.redirect('/login');
+  });
+});
+
+
+// Registration for publisher
+app.post('/registerpenerbit', async (req, res) => {
+  const { nama, email, password } = req.body;
+  console.log("Original password:", password); // Log the original password
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log("Hashed password:", hashedPassword); // Log the hashed password
+
+  const sql = 'INSERT INTO penerbit (nama_penerbit, email, password) VALUES (?, ?, ?)';
+  db.query(sql, [nama, email, hashedPassword], (err, result) => {
+    if (err) {
+      console.error('Error inserting data:', err.stack);
+      return res.status(500).send('Error registering user');
+    }
+    res.redirect('/login');
+  });
+});
+
+
+/*LOGIN SECTION*/
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  const sqlAdmin = 'SELECT * FROM admin WHERE email = ? AND password = ?';
+  db.query(sqlAdmin, [email, password], (err, results) => {
+    if (err) {
+      console.error('Error querying data:', err.stack);
+      return res.status(500).send('Error logging in');
+    }
+    if (results.length > 0) {
+      req.session.loggedIn = true;
+      req.session.role = 'admin';
+      req.session.user = {
+        id: results[0].id_admin,
+        name: results[0].nama,
+      };
+      return res.redirect('/admin');
+    } else {
+      loginPenerbit();
+    }
+  });
+
+  function loginPenerbit() {
+    const sqlPenerbit = 'SELECT id_penerbit, nama_penerbit, password FROM penerbit WHERE email = ?';
+    db.query(sqlPenerbit, [email], async (errPenerbit, resultsPenerbit) => {
+      if (errPenerbit) {
+        console.error('Error querying data:', errPenerbit.stack);
+        return res.status(500).send('Error logging in');
+      }
+      if (resultsPenerbit.length > 0 && await bcrypt.compare(password, resultsPenerbit[0].password)) {
+        req.session.loggedIn = true;
+        req.session.role = 'penerbit';
+        req.session.user = {
+          id: resultsPenerbit[0].id_penerbit,
+          name: resultsPenerbit[0].nama_penerbit,
+        };
+        return res.redirect('/publikasi');
+      } else {
+        loginUser();
+      }
+    });
+  }
+
+  function loginUser() {
+    const sqlUser = 'SELECT id_user, nama, password FROM user WHERE email = ?';
+    db.query(sqlUser, [email], async (errUser, resultsUser) => {
+      if (errUser) {
+        console.error('Error querying data:', errUser.stack);
+        return res.status(500).send('Error logging in');
+      }
+      if (resultsUser.length > 0 && await bcrypt.compare(password, resultsUser[0].password)) {
+        req.session.loggedIn = true;
+        req.session.role = 'user'; 
+        req.session.user = {
+          id: resultsUser[0].id_user,
+          name: resultsUser[0].nama,
+        };
+        return res.redirect('/dashboarduser');
+      } else {
+        req.flash('error_msg', 'Email atau password salah');
+        return res.redirect('/login');
+      }
+    });
+  }
+});
+
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.redirect('/');
+    }
+    res.redirect('/login');
+  });
+});
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT STORAGE STATIC*/
+/*----------------------------------*/
+
+/*Multer setup*/
+const imagestorage = multer.diskStorage({
+  destination: (_req, file, cb) => {
+    cb(null, 'blockbook-assets/book');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const pdfstorage = multer.diskStorage({
+  destination: (_req, file, cb) => {
+    cb(null, 'blockbook-assets/book');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const imageFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only images are allowed!'), false);
+  }
+};
+
+const pdfFilter = (req, file, cb) => {
+  if (file.mimetype === 'application/pdf') {
+    cb(null, true);
+  } else {
+    cb(new Error('Only PDFs are allowed!'), false);
+  }
+};
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      if (file.mimetype === 'application/pdf') {
+        cb(null, 'blockbook-assets/book');
+      } else if (file.mimetype.startsWith('image/')) {
+        cb(null, 'blockbook-assets/book');
+      }
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + path.extname(file.originalname));
+    }
+  }),
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype === 'application/pdf' || file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type'), false);
+    }
+  }
+});
+
+const uploadImage = multer({ storage: imagestorage, fileFilter: imageFilter });
+const uploadpdf = multer({ storage: pdfstorage, fileFilter: pdfFilter });
+
+
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT PUBLIKASI BUKU*/
+/*----------------------------------*/
+
+/*Publikasi Buku*/
+app.post('/publikasi', upload.fields([
+  { name: 'gambar_buku', maxCount: 1 },
+  { name: 'Identitas', maxCount: 1 },
+  { name: 'EBook', maxCount: 1 }
+]), async (req, res) => {
+  const { judul_buku, penulis_buku, sinopsis_buku, harga_buku, ISBN, waktu_publish, bahasa, lembar_print, BANK_ID } = req.body;
+  const { gambar_buku, EBook, Identitas } = req.files;
+
+  const id_penerbit = req.session.user.id;
+
+  const bukuData = {
+    id_penerbit,
+    judul_buku,
+    penulis_buku,
+    sinopsis_buku,
+    harga_buku,
+    ISBN,
+    waktu_publish,
+    bahasa,
+    lembar_print,
+    BANK_ID,
+    gambar_buku: gambar_buku ? 'book/' + gambar_buku[0].filename : '',
+    ebook: EBook ? 'book/' + EBook[0].filename : '',
+    identitas: Identitas ? 'book/' + Identitas[0].filename : '',
+  };
+
+  try {
+    await new Promise((resolve, reject) => {
+      db.query('INSERT INTO buku SET ?', bukuData, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+    res.redirect('/publikasi');
+  } catch (err) {
+    console.error('Error inserting book:', err);
+    res.status(500).send('Error publishing book');
+  }
+});
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT BUKU*/
+/*----------------------------------*/
+
+/*HAPUS BUKU*/
+app.post('/delete_book', (req, res) => {
+  const { id_buku } = req.body;
+
+  const sql = 'DELETE FROM buku WHERE id_buku = ?';
+  db.query(sql, [id_buku], (err, result) => {
+    if (err) {
+      console.error('Error deleting book:', err.stack);
+      return res.status(500).send('Error deleting book');
+    }
+    res.redirect('/databuku');
+  });
+});
+
+/* Book product */
+app.get('/bookproduct', (req, res) => {
+  const sql = `SELECT id_buku, buku.gambar_buku, buku.judul_buku, buku.harga_buku, buku.sinopsis_buku, buku.jumlah_stock
+    FROM buku
+    WHERE buku.is_visible = TRUE`;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching book data:', err.stack);
+      return res.status(500).send('Error fetching book data');
+    }
+    res.render('user/book_product', { books: results, user: req.session.user });
+  });
+});
+
+/*UPDATE VISIBILITY BUKU*/
+app.post('/update_visibility', (req, res) => {
+  const { id_buku, is_visible } = req.body;
+  const visibilityStatus = is_visible === 'on' ? true : false;
+
+  const sql = 'UPDATE buku SET is_visible = ? WHERE id_buku = ?';
+  db.query(sql, [visibilityStatus, id_buku], (err, result) => {
+    if (err) {
+      console.error('Error updating visibility:', err.stack);
+      return res.status(500).send('Error updating visibility');
+    }
+    res.redirect('/admin');
+  });
+});
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT KERANJANG*/
+/*----------------------------------*/
+
+/*KERANJANG SECTION*/
+app.get('/cart', ensureAuthenticated, (req, res) => {
+  const userId = req.session.user.id;
+  const sql = 'SELECT cart_data FROM cart WHERE id_user = ?';
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error('Error fetching cart data:', err.stack);
+      return res.status(500).send('Error fetching cart data');
+    }
+    const cartData = results.length > 0 ? JSON.parse(results[0].cart_data) : [];
+    res.json({ cart: cartData });
+  });
+});
+
+app.post('/cart', ensureAuthenticated, (req, res) => {
+  const userId = req.session.user.id;
+  const cartData = JSON.stringify(req.body.cart);
+
+  const sqlSelect = 'SELECT id FROM cart WHERE id_user = ?';
+  db.query(sqlSelect, [userId], (err, results) => {
+    if (err) {
+      console.error('Error querying cart data:', err.stack);
+      return res.status(500).send('Error querying cart data');
+    }
+
+    if (results.length > 0) {
+      const sqlUpdate = 'UPDATE cart SET cart_data = ? WHERE id_user = ?';
+      db.query(sqlUpdate, [cartData, userId], (updateErr) => {
+        if (updateErr) {
+          console.error('Error updating cart data:', updateErr.stack);
+          return res.status(500).send('Error updating cart data');
+        }
+        res.json({ success: true });
+      });
+    } else {
+      const sqlInsert = 'INSERT INTO cart (id_user, cart_data) VALUES (?, ?)';
+      db.query(sqlInsert, [userId, cartData], (insertErr) => {
+        if (insertErr) {
+          console.error('Error inserting cart data:', insertErr.stack);
+          return res.status(500).send('Error inserting cart data');
+        }
+        res.json({ success: true });
+      });
+    }
+  });
+});
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT KERANJANG CHECKOUT*/
+/*----------------------------------*/
+
+app.post('/checkout', ensureAuthenticated, (req, res) => {
+  console.log('Cart data received:', req.body.cart);
+  req.session.cart = req.body.cart; // Save cart data to session
+  req.session.save((err) => { // Ensure session is saved
+    if (err) {
+      console.error('Error saving session:', err);
+      return res.status(500).json({ success: false, message: 'Failed to save session' });
+    }
+    console.log('Session after saving cart:', req.session);
+    res.json({ success: true });
+  });
+});
+
+
+app.get('/keranjang', ensureAuthenticated, (req, res) => {
+  console.log('Session data:', req.session);  // Debug log to check session data
+  const cartData = req.session.cart || [];
+  console.log('Cart data to be rendered:', cartData);  // Debug log
+  res.render('transaksi/keranjang', { cart: cartData , user : req.session.user});
+});
+
+
+
+
+
+/*----------------------------------*/
+/*MANAGEMENT PORT*/
+/*----------------------------------*/
+
+const port = process.env.PORT || 8001;
+app.listen(port, () => {
+  console.log(`Server berjalan di port ${port}`);
+});
+
+
+function renderkeranjang(){
+    const keranjangquickview = `
+        <div id="cart" class="cart">
+            <button class="close" id="close-cart">&times;</button>
+            <h2>Keranjang Belanja</h2>
+            <div id="empty-cart" class="empty-cart">
+                <img src="image/keranjang.svg" alt="Cart Graphic">
+                <p>Tidak ada pesanan</p>
+            </div>
+            <ul id="cart-items"></ul>
+            <p class="total">Total: Rp. 0</p>
+            <button class="checkout" id="checkout">Checkout</button>
+        </div>
+        <div class="page-overlay"></div>
+
+        <div id="quickview-modal" class="quickview-modal">
+            <div class="quickview-content">
+                <div class="quickview-details"></div>
+                <button class="close-quickview">&times;</button>
+            </div>
+        </div>
+    `;
+    document.getElementById('keranjangview').innerHTML = keranjangquickview;
+}
+
+renderkeranjang();
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockBook - Publisher Transactions</title>
+    <meta name="title" content="BlockBook - Publisher Transactions">
+    <meta name="description" content="Publisher Transactions Page">
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preload" as="image" href="/image/hero-banner.png">
+    <link rel="preload" as="image" href="/image/hero-bg.jpg">
+
+    <script>
+        const userphoto = "<%= user.photo %>";
+        const usernama = "<%= user.name %>";
+    </script>
+</head>
+<body id="top">
+    <div id="headerpenerbit"></div>
+
+    <div class="container mt-5" style="padding-top: 100px; padding-bottom: 100px; background-color: var(--white-background);">
+        <h2 class="mb-4">My Transactions</h2>
+        <% if (!transactions || transactions.length === 0) { %>
+            <div class="alert alert-info" role="alert">
+                No transactions found.
+            </div>
+        <% } else { %>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>User ID</th>
+                        <th>Book Title</th>
+                        <th>Transaction Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% transactions.forEach(transaction => { %>
+                        <tr>
+                            <td><%= transaction.transaction_id %></td>
+                            <td><%= transaction.user_id %></td>
+                            <td><%= transaction.bookTitle %></td>
+                            <td><%= new Date(transaction.transaction_date * 1000).toLocaleDateString("en-US") %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
+
+    <div id="footerpenerbit"></div>
+
+    <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+        <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+    </a>
+
+    <script src="/js/scriptweb.js" defer></script>
+    <script src="/js/scriptpenerbit.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
+

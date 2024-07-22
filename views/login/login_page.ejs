@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login BlockBook</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body>
+  <div class="login-container">
+    
+      <div class="login-form">
+          <h2>Login</h2>
+          <form action="/login" method="post" id="loginForm">
+              <div class="form-group">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" required>
+              </div>
+              <div class="form-group">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block" id="loginButton">Login</button>
+          </form>
+          <p class="register-link">Tidak punya akun? <a href="/registeruser" class="register-link">Daftar di sini</a><a href="/registerpenerbit" class="register-link">Publisher Book Daftar Disini</a></p>
+      </div>
+  </div>
+
+  <a href="#top" class="back-top-btn" id="backToTop" aria-label="back to top">
+      <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+  </a>
+
+  <div class="modal-body">
+    <p class="error-message" id="modalErrorMessage">
+        <% if (error_msg.length > 0) { %>
+            <%= error_msg %>
+        <% } %>
+    </p>
+</div>
+    
+
+  <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="termsModalLabel">Syarat dan Ketentuan</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p>Syarat dan Ketentuan Login</p>
+                  <p>Akurasi Informasi: Pengguna harus memastikan bahwa semua informasi yang dimasukkan saat login, termasuk alamat email dan kata sandi, adalah akurat dan up-to-date.</p>
+                  <p>Keamanan Akun: Pengguna bertanggung jawab untuk menjaga keamanan kata sandi dan akunnya. Segala bentuk akses yang tidak sah, kehilangan, atau pencurian kredensial harus segera dilaporkan kepada administrator sistem.</p>
+                  <p>Perilaku Pengguna: Pengguna harus mengikuti semua pedoman dan kebijakan yang berlaku saat menggunakan layanan ini. Setiap tindakan yang melanggar hukum atau etika dapat mengakibatkan penangguhan atau pemberhentian akses.</p>
+                  <p>Kebijakan Cookie: Dengan melakukan login, pengguna menyetujui penggunaan cookie yang bertujuan untuk memperbaiki kualitas interaksi dengan layanan ini, kecuali jika pengguna telah mengatur browser untuk menolak </p>
+                  <p>Pembaruan Kebijakan: Syarat dan ketentuan login ini dapat diperbarui atau dimodifikasi sesuai kebutuhan tanpa pemberitahuan sebelumnya. Pengguna disarankan untuk secara rutin meninjau syarat dan ketentuan ini.</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+    <script> src="js/scriptlogin.js"</script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var errorMessage = "<%= error_msg %>";
+            if (errorMessage.length > 0) {
+                $('#modalErrorMessage').text(errorMessage);
+                $('#errorModal').modal('show');
+            }
+    
+            $('#closeModal').click(function() {
+                $('#errorModal').modal('hide');
+            });
+        });
+    </script>
+
+</body>
+
+</html>
